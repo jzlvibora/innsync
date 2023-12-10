@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +30,13 @@ public class ReservationService {
 //        return reservations;
 //    }
 
-    public Reservation bookARoom(User user, Room room, Date checkInDate, Date checkoutDate){
+    public Reservation bookARoom(User user, Room room, LocalDate checkInDate, LocalDate checkoutDate){
 //        List<Reservation> existingReservations = reservationRepository.findByRoomAndCheckInDateLessThanEqualAndCheckoutDateGreaterThanEqual(room,checkInDate,checkoutDate);
         if(isRoomAvailable(room,checkInDate,checkoutDate)){
             Reservation newReservation = new Reservation();
             newReservation.setRoom(room);
-            newReservation.setCheckInDate(new Date(String.valueOf(checkInDate)));
-            newReservation.setCheckoutDate(new Date(String.valueOf(checkoutDate)));
+            newReservation.setCheckInDate(checkInDate);
+            newReservation.setCheckoutDate(checkoutDate);
             newReservation.setUser(user);
             newReservation.setAmount(12000);
             reservationRepository.save(newReservation);
@@ -47,11 +47,15 @@ public class ReservationService {
         }
     }
 
-    public boolean isRoomAvailable(Room room, Date checkInDate, Date checkoutDate){
-        List<Reservation> existingReservations = reservationRepository.findByRoomAndCheckInDateLessThanEqualAndCheckoutDateGreaterThanEqual(room,checkInDate,checkoutDate);
+    public boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkoutDate){
+//        Long id = room.getRoomId();
+        List<Reservation> existingReservations = reservationRepository.findByRoomAndCheckInDateBetweenOrCheckoutDateBetween(room,checkInDate,checkoutDate,checkInDate,checkoutDate);
         return existingReservations.isEmpty();
     }
 
 
-
+    public List<Reservation> getAllReservationsByUser(Optional<User> user) {
+        List<Reservation> userReservations = reservationRepository.findReservationsByUser(user);
+        return userReservations;
+    }
 }

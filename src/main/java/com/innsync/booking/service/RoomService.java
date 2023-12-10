@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,6 +22,11 @@ public class RoomService {
     public List<Room> getAllRooms(){
         List<Room> rooms = roomRepository.findAll();
         return rooms;
+    }
+
+    public List<Room> getAllAvailableRooms(LocalDate checkInDate, LocalDate checkoutDate){
+        List<Room> availableRooms = roomRepository.findAvailableRoomsBetweenDates(checkInDate,checkoutDate);
+        return availableRooms;
     }
 
     public Room addRoom(Room newRoom){

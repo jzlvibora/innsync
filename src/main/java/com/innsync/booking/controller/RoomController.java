@@ -4,14 +4,18 @@ import com.innsync.booking.dto.RoomDTO;
 import com.innsync.booking.model.Room;
 import com.innsync.booking.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("innsync/rooms")
+@CrossOrigin(value = "http://localhost:4200")
 public class RoomController {
     @Autowired
     private RoomService roomService;
@@ -19,6 +23,14 @@ public class RoomController {
     @GetMapping
     public List<Room> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
+        return rooms;
+    }
+
+    @GetMapping("/availableRooms")
+    public List<Room> getAllAvailableRooms(@RequestParam String checkInDate, @RequestParam String checkoutDate){
+        LocalDate inDate = LocalDate.parse(checkInDate);
+        LocalDate outDate = LocalDate.parse(checkoutDate);
+        List<Room> rooms = roomService.getAllAvailableRooms(inDate,outDate);
         return rooms;
     }
 
