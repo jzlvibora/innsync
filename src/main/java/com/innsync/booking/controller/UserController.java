@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("innsync/user")
+@CrossOrigin(value = "http://localhost:4200")
 public class UserController {
     @Autowired
     private UserService userService;

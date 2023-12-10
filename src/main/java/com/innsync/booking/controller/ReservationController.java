@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("innsync/reservations")
+@CrossOrigin(value = "http://localhost:4200")
 public class ReservationController {
 
     @Autowired
@@ -36,20 +39,19 @@ public class ReservationController {
     public List<Reservation> getAllReservations(){
         List<Reservation> reservations = reservationService.getAllReservations();
         return reservations;
-
     }
 
-//    @GetMapping
-//    public List<Reservation> getAllReservationsByUser(@PathVariable String username){
-//        Optional<User> user = userRepository.findUserByUsername(username);
-//        List<Reservation> reservations = reservationService.getAllReservationsByUser(user);
-//        return reservations;
-//    }
+    @GetMapping("/{username}")
+    public List<Reservation> getAllReservationsByUser(@PathVariable String username){
+        Optional<User> user = userRepository.findUserByUsername(username);
+        List<Reservation> reservations = reservationService.getAllReservationsByUser(user);
+        return reservations;
+    }
 
     @PostMapping("/new")
     public Reservation reserveARoom(@RequestBody ReservationRequestDTO reservationRequestDTO){
-        Date checkInDate = reservationRequestDTO.getCheckInDate();
-        Date checkoutDate = reservationRequestDTO.getCheckOutDate();
+        LocalDate checkInDate = reservationRequestDTO.getCheckInDate();
+        LocalDate checkoutDate = reservationRequestDTO.getCheckOutDate();
         Room room = roomRepository.findById(reservationRequestDTO.getRoomId()).orElseThrow(()-> new RuntimeException("Selected room not found"));
         User user = userRepository.findUserByUsername(reservationRequestDTO.getUsername()).orElseThrow(()-> new RuntimeException("User not found"));
         return reservationService.bookARoom(user,room,checkInDate,checkoutDate);
