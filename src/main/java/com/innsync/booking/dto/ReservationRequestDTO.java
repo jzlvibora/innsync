@@ -1,11 +1,12 @@
 package com.innsync.booking.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ReservationRequestDTO {
     private Long roomId;
-    private Date checkInDate;
-    private Date checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private String username;
 
     public String getUsername() {
@@ -24,19 +25,19 @@ public class ReservationRequestDTO {
         this.roomId = roomId;
     }
 
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return checkInDate;
     }
 
-    public void setCheckInDate(Date checkInDate) {
+    public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
 
-    public void setCheckOutDate(Date checkOutDate) {
+    public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
 

@@ -1,12 +1,13 @@
 package com.innsync.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -17,14 +18,15 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long reservationId;
 
-    private Date checkInDate;
-    private Date checkoutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkoutDate;
     private double amount;
 
     @ManyToOne
     @JoinColumn(name="user_id", referencedColumnName = "userId")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="room_id", referencedColumnName = "roomId")
     private Room room;
@@ -40,19 +42,19 @@ public class Reservation {
         this.reservationId = reservationId;
     }
 
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return checkInDate;
     }
 
-    public void setCheckInDate(Date checkInDate) {
+    public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckoutDate() {
+    public LocalDate getCheckoutDate() {
         return checkoutDate;
     }
 
-    public void setCheckoutDate(Date checkoutDate) {
+    public void setCheckoutDate(LocalDate checkoutDate) {
         this.checkoutDate = checkoutDate;
     }
 
