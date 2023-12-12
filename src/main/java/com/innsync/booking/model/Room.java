@@ -18,10 +18,12 @@ public class Room {
     private Long roomId;
 
     private String roomNumber;
-    private String type;
+//    private String type;
     private double price;
     private int capacity;
     private String description;
+
+    private RoomType roomType;
 
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
@@ -41,14 +43,6 @@ public class Room {
 
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public double getPrice() {
@@ -81,5 +75,13 @@ public class Room {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 }

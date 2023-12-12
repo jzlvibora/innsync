@@ -45,7 +45,7 @@ public class RoomController {
         Room newRoom = new Room();
         newRoom.setRoomNumber(roomDTO.getRoomNumber());
         newRoom.setPrice(roomDTO.getPrice());
-        newRoom.setType(roomDTO.getType());
+        newRoom.setRoomType(roomDTO.getRoomType());
         newRoom.setCapacity(roomDTO.getCapacity());
         newRoom.setDescription(roomDTO.getDescription());
 
