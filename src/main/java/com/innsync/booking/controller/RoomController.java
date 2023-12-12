@@ -48,6 +48,7 @@ public class RoomController {
         newRoom.setRoomType(roomDTO.getRoomType());
         newRoom.setCapacity(roomDTO.getCapacity());
         newRoom.setDescription(roomDTO.getDescription());
+        newRoom.setRoomName(newRoom.generateRoomName());
 
         roomService.addRoom(newRoom);
         return new ResponseEntity<>(HttpStatus.CREATED);

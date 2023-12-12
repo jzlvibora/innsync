@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room,Long> {
-    Optional<Object> findByRoomNumber(String roomNumber);
+    Optional<Object> findByRoomNumber(int roomNumber);
 
     @Query("SELECT r FROM Room r LEFT JOIN r.reservations res " + "WHERE (res.checkoutDate < :checkInDate OR res.checkInDate > :checkoutDate) OR res.reservationId IS NULL")
     List<Room> findAvailableRoomsBetweenDates(@Param("checkInDate") LocalDate checkInDate , @Param("checkoutDate") LocalDate checkoutDate);

@@ -17,13 +17,20 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
 
-    private String roomNumber;
-//    private String type;
+    private int roomNumber;
+
     private double price;
     private int capacity;
     private String description;
 
     private RoomType roomType;
+
+    private String roomName;
+
+    public String generateRoomName() {
+        // Implement a naming convention based on the room type
+        return roomType.name() + "-" + roomNumber;
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
@@ -37,11 +44,11 @@ public class Room {
         this.roomId = roomId;
     }
 
-    public String getRoomNumber() {
+    public int getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(String roomNumber) {
+    public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
     }
 
@@ -83,5 +90,13 @@ public class Room {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }
