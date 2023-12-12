@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +19,12 @@ import java.util.List;
 public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
+
+    public Room getRoom(Long id){
+        Optional<Room> room = roomRepository.findById(id);
+        return room.orElseThrow();
+
+    }
 
     public List<Room> getAllRooms(){
         List<Room> rooms = roomRepository.findAll();

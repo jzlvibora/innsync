@@ -20,7 +20,13 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping
+    @GetMapping("/{id}")
+    public Room getRoom(@PathVariable Long id){
+        Room room = roomService.getRoom(id);
+        return room;
+    }
+
+    @GetMapping("/ourRooms")
     public List<Room> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
         return rooms;

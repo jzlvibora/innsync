@@ -50,9 +50,9 @@ public class UserService {
     }
 
 
-    public List<Reservation> getAllReservationsByUser(User user){
-        List<Reservation> reservations = reservationRepository.findAllReservationsByUser(user);
-        return reservations;
-    }
+//    public List<Reservation> getAllReservationsByUser(User user){
+//        List<Reservation> reservations = reservationRepository.findReservationsByUser(user.getUserId());
+//        return reservations;
+//    }
 
 }
