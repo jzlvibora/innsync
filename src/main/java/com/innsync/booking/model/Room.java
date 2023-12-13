@@ -33,7 +33,7 @@ public class Room {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
     public Long getRoomId() {
