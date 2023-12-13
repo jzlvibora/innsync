@@ -4,6 +4,7 @@ import com.innsync.booking.model.Reservation;
 import com.innsync.booking.model.Room;
 import com.innsync.booking.model.User;
 import com.innsync.booking.repository.ReservationRepository;
+import com.innsync.booking.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
+    private RoomRepository roomRepository;
 
     public List<Reservation> getAllReservations(){
         List<Reservation> reservations = reservationRepository.findAll();
@@ -49,8 +51,11 @@ public class ReservationService {
 
     public boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkoutDate){
 //        Long id = room.getRoomId();
-        List<Reservation> existingReservations = reservationRepository.findByRoomAndCheckInDateBetweenOrCheckoutDateBetween(room,checkInDate,checkoutDate,checkInDate,checkoutDate);
-        return existingReservations.isEmpty();
+        List<Room> availableRooms = roomRepository.findAvailableRoomsBetweenDates(checkInDate,checkoutDate);
+        if(availableRooms.size()!=0 && availableRooms.contains(room)){
+            return true;
+        }
+        else return false;
     }
 
 
