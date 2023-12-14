@@ -1,6 +1,7 @@
 package com.innsync.booking.service;
 
 import com.innsync.booking.exceptions.RoomAlreadyExistsException;
+import com.innsync.booking.exceptions.RoomNotFoundException;
 import com.innsync.booking.model.Room;
 import com.innsync.booking.repository.RoomRepository;
 import jakarta.transaction.Transactional;
@@ -42,6 +43,20 @@ public class RoomService {
         }
 
         return roomRepository.save(newRoom);
+    }
+
+    public Room updateRoom(Long id,Room room){
+        Room roomToUpdate=roomRepository.findById(id).orElseThrow(()->new RoomNotFoundException("Room not found"));
+        roomToUpdate.setRoomNumber(room.getRoomNumber());
+        roomToUpdate.setPrice(room.getPrice());
+        roomToUpdate.setRoomType(room.getRoomType());
+        roomToUpdate.setCapacity(room.getCapacity());
+        roomToUpdate.setDescription(room.getDescription());
+        roomToUpdate.setRoomName(roomToUpdate.generateRoomName());
+        System.out.println(roomToUpdate);
+       roomRepository.save(roomToUpdate);
+       return roomToUpdate;
+
     }
 
     public void deleteRoom(Long id){
