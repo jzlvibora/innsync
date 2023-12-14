@@ -3,16 +3,19 @@ package com.innsync.booking.controller;
 import com.innsync.booking.dto.RoomDTO;
 import com.innsync.booking.model.Room;
 import com.innsync.booking.service.RoomService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("innsync/rooms")
 @CrossOrigin(value = "http://localhost:4200")
@@ -21,27 +24,37 @@ public class RoomController {
     private RoomService roomService;
 
     @GetMapping("/{id}")
-    public Room getRoom(@PathVariable Long id){
+    public ResponseEntity<Room> getRoom(@PathVariable Long id){
         Room room = roomService.getRoom(id);
-        return room;
+        return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
     @GetMapping("/ourRooms")
-    public List<Room> getAllRooms(){
+    public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
-        return rooms;
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
     @GetMapping("/availableRooms")
-    public List<Room> getAllAvailableRooms(@RequestParam String checkInDate, @RequestParam String checkoutDate){
+    public ResponseEntity<List<Room>> getAllAvailableRooms(
+            @RequestParam
+            @Valid
+            @NotNull(message = "Check-in date must not be null")
+            @Future(message = "Check-in date must be in the present or future")
+            String checkInDate,
+            @RequestParam
+            @Valid
+            @NotNull(message = "Check-out date must not be null")
+            @Future(message = "Check-out date must be in the present or future")
+            String checkoutDate){
         LocalDate inDate = LocalDate.parse(checkInDate);
         LocalDate outDate = LocalDate.parse(checkoutDate);
         List<Room> rooms = roomService.getAllAvailableRooms(inDate,outDate);
-        return rooms;
+        return new ResponseEntity<>(rooms,HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Room> addRoom(@RequestBody RoomDTO roomDTO){
+    public ResponseEntity<String> addRoom(@RequestBody RoomDTO roomDTO){
         Room newRoom = new Room();
         newRoom.setRoomNumber(roomDTO.getRoomNumber());
         newRoom.setPrice(roomDTO.getPrice());
@@ -51,19 +64,22 @@ public class RoomController {
         newRoom.setRoomName(newRoom.generateRoomName());
 
         roomService.addRoom(newRoom);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("Room added successfully" , HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody Room room){
+    public ResponseEntity<String> updateRoom(
+            @PathVariable
+            @NotNull(message = "Room ID must be specified") Long id,
+            @RequestBody Room room){
         roomService.updateRoom(id,room);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Successfully updated room with id " + id,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Room> deleteRoom(@PathVariable Long id){
+    public ResponseEntity<String> deleteRoom(@PathVariable Long id){
         roomService.deleteRoom(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Successfully deleted room with id " + id, HttpStatus.OK);
 
     }
 }

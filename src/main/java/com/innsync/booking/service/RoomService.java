@@ -23,8 +23,7 @@ public class RoomService {
 
     public Room getRoom(Long id){
         Optional<Room> room = roomRepository.findById(id);
-        return room.orElseThrow();
-
+            return room.orElseThrow(()->new RoomNotFoundException("Cannot find room with id " + id));
     }
 
     public List<Room> getAllRooms(){
@@ -39,14 +38,14 @@ public class RoomService {
 
     public Room addRoom(Room newRoom){
         if (roomRepository.findByRoomNumber(newRoom.getRoomNumber()).isPresent()) {
-            throw new RoomAlreadyExistsException("Room already exists: " + newRoom.getRoomNumber());
+            throw new RoomAlreadyExistsException("Room " + newRoom.getRoomNumber() + " already exists." );
         }
 
         return roomRepository.save(newRoom);
     }
 
     public Room updateRoom(Long id,Room room){
-        Room roomToUpdate=roomRepository.findById(id).orElseThrow(()->new RoomNotFoundException("Room not found"));
+        Room roomToUpdate=roomRepository.findById(id).orElseThrow(()->new RoomNotFoundException("Room with id " + id + " not found"));
         roomToUpdate.setRoomNumber(room.getRoomNumber());
         roomToUpdate.setPrice(room.getPrice());
         roomToUpdate.setRoomType(room.getRoomType());
@@ -60,8 +59,7 @@ public class RoomService {
     }
 
     public void deleteRoom(Long id){
-        roomRepository.deleteById(id);
-
+        Room room = roomRepository.findById(id).orElseThrow(()->new RoomNotFoundException("Cannot delete room with id " + id + ".It does not exist."));
+        roomRepository.delete(room);
     }
-
 }
