@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
 
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

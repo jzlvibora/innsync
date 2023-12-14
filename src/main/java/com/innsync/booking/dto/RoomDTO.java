@@ -1,9 +1,11 @@
 package com.innsync.booking.dto;
 
+import com.innsync.booking.model.RoomType;
+
 public class RoomDTO {
     private Long roomId;
-    private String roomNumber;
-    private String type;
+    private int roomNumber;
+    private RoomType roomType;
     private double price;
     private int capacity;
     private String description;
@@ -16,20 +18,20 @@ public class RoomDTO {
         this.roomId = roomId;
     }
 
-    public String getRoomNumber() {
+    public int getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(String roomNumber) {
+    public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
     }
 
-    public String getType() {
-        return type;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
     public double getPrice() {
