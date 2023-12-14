@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Validated
+
 @RestController
 @RequestMapping("innsync/rooms")
 @CrossOrigin(value = "http://localhost:4200")
@@ -38,12 +38,10 @@ public class RoomController {
     @GetMapping("/availableRooms")
     public ResponseEntity<List<Room>> getAllAvailableRooms(
             @RequestParam
-            @Valid
             @NotNull(message = "Check-in date must not be null")
             @Future(message = "Check-in date must be in the present or future")
             String checkInDate,
             @RequestParam
-            @Valid
             @NotNull(message = "Check-out date must not be null")
             @Future(message = "Check-out date must be in the present or future")
             String checkoutDate){
