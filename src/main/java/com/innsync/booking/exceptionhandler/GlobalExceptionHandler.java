@@ -1,6 +1,7 @@
 package com.innsync.booking.exceptionhandler;
 
 import com.innsync.booking.error.ErrorResponse;
+import com.innsync.booking.exceptions.RoomAlreadyExistsException;
 import com.innsync.booking.exceptions.RoomNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRoomNotFoundException(RoomNotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoomAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleRoomAlreadyExistsException(RoomAlreadyExistsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
 
